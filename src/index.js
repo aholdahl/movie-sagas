@@ -24,7 +24,7 @@ function* rootSaga() {
 
 function* fetchMovies(action){
     try{
-        let response = yield axios.get('/')
+        let response = yield axios.get('/movies')
         yield put ({
             type: 'SET_MOVIES',
             payload: response.data
@@ -36,7 +36,7 @@ function* fetchMovies(action){
 
 function* fetchGenres(action) {
     try {
-        let response = yield axios.get('/')
+        let response = yield axios.get('/genres')
         yield put({
             type: 'SET_GENRES',
             payload: response.data
