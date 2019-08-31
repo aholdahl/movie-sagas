@@ -9,19 +9,65 @@ import { connect } from 'react-redux';
 class Edit extends Component {
     state = {
         title: '',
-        details: ''
+        description: ''
+    }
+
+    componentDidMount(){
+        this.setState({
+            title: this.props.currentMovie.title,
+            description: this.props.currentMovie.description,
+        })
+    }
+
+    handleChange = (event, property)=>{
+        this.setState({
+            ...this.state,
+            [property]: event.target.value
+        })
+    }
+
+    handleSubmit = ()=>{
+        this.props.dispatch({
+            type: 'CHANGE_CURRENT',
+            payload: {
+                ...this.state,
+                id: this.props.currentMovie.id
+            }
+        });
+        this.setState({
+            title: '',
+            description: ''
+        })
+        this.props.history.push('/');
+    }
+
+    returnDetails = ()=>{
+        console.log('in returnDetails');
+        this.setState({
+            title: '',
+            details: ''
+        })
+        this.props.history.push('/details');
     }
     
     render() {
         return (
-            <h3>Edit</h3>
+            <div>
+                <h2>Edit</h2>
+                <img src={this.props.currentMovie.poster} alt={this.props.currentMovie.title} />
+                <input value={ this.state.title } onChange={(event)=>{this.handleChange(event, 'title')}}/>
+                <input value={this.state.description} onChange={(event)=>{this.handleChange(event, 'description')}}/>
+                {/* <p><input type="checkbox" />{this.props.currentMovie.genre}</p> */}
+                <button onClick={this.handleSubmit}>Save Changes</button>
+                <button onClick={this.returnDetails}>Cancel</button>
+            </div>
         )
     }
 }
 
 const mapStateToProps = (reduxStore) => {
     return {
-        reduxStore
+        currentMovie: reduxStore.currentMovie
     }
 }
 

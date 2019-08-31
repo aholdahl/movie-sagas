@@ -21,6 +21,7 @@ function* rootSaga() {
     yield takeEvery ('FETCH_MOVIES', fetchMovies);
     yield takeEvery ('FETCH_GENRES', fetchGenres);
     yield takeEvery ('FETCH_CURRENT', fetchCurrent);
+    yield takeEvery('CHANGE_CURRENT', changeCurrent);
 }
 
 function* fetchMovies(action){
@@ -56,6 +57,17 @@ function* fetchCurrent(action){
         })
     } catch (error){
         console.log('Could not get current movie:', error);
+    }
+}
+
+function* changeCurrent(action){
+    try {
+        yield axios.put(`/movies`, action.payload)
+        yield put ({
+            type: 'FETCH_MOVIES',
+        })
+    } catch (error){
+        console.log('Could not update current movie:, error');
     }
 }
 

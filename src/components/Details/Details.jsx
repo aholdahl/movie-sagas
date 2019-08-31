@@ -7,15 +7,40 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 
 class Details extends Component {
+
+    handleEdit = ()=>{
+        console.log('in handleEdit');
+        this.props.history.push('/edit');
+    }
+
+    returnHome = ()=>{
+        this.props.history.push('/');
+    }
+
     render (){
+
+        // let renderGenres = ()=>{if(this.props.currentMovie.genre !== null) {
+        //     // return ( this.props.currentMovie.genre.map((category)=>{
+        //         return (
+        //             <li>{this.props.currentMovie.genre}</li>
+        //             // <li>{category}</li>
+        //         )
+        //     // })
+        //     }
+        // }
+    
+
         return (
             <div>
                 <h2>Details</h2>
                 <img src={this.props.currentMovie.poster} alt={this.props.currentMovie.title}/>
                 <h4>{this.props.currentMovie.title}</h4>
                 <p>{this.props.currentMovie.description}</p>
-                <button>Edit</button>
-                <button>Return to Home</button>
+                {/* <ul>
+                    {renderGenres}
+                </ul> */}
+                <button onClick={this.handleEdit}>Edit</button>
+                <button onClick={this.returnHome}>Return to Home</button>
             </div>
         )
     }
