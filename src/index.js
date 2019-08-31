@@ -76,13 +76,13 @@ function* fetchCurrentGenres(action) {
     }
 }
 
-//send PUT request to the server to update the current movie
+//send PUT request to the server to update the current movie, then trigger GET request for updated info
 function* changeCurrentMovie(action){
     try {
         yield axios.put(`/movies`, action.payload)
         yield put ({
-            type: 'FETCH_ALL_MOVIES',
-            payload: action.payload
+            type: 'FETCH_CURRENT_MOVIE',
+            payload: action.payload.id
         })
     } catch (error){
         console.log('Could not update current movie:, error');

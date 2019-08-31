@@ -13,6 +13,7 @@ class Edit extends Component {
     componentDidMount() {
         // this.fetchAllGenres();
         this.setState({
+            id: this.props.currentMovie.id,
             title: this.props.currentMovie.title,
             description: this.props.currentMovie.description,
         })
@@ -36,10 +37,7 @@ class Edit extends Component {
     handleSubmit = () => {
         this.props.dispatch({
             type: 'CHANGE_CURRENT_MOVIE',
-            payload: {
-                ...this.state,
-                id: this.props.currentMovie.id
-            }
+            payload: this.state
         });
         //Upon successful update of the database, reset the local state to blank
         this.setState({
@@ -47,7 +45,7 @@ class Edit extends Component {
             description: ''
         })
         //Navigate back to the Details page
-        this.props.history.push('/');
+        this.props.history.push('/details');
     }
 
     //On click, reset the local state to blank and navigate to the details page
@@ -74,7 +72,7 @@ class Edit extends Component {
                 <h2>Edit</h2>
                 <img src={this.props.currentMovie.poster} alt={this.props.currentMovie.title} />
                 <input value={this.state.title} onChange={(event) => { this.handleChange(event, 'title') }} />
-                <input value={this.state.description} onChange={(event) => { this.handleChange(event, 'description') }} />
+                <textarea value={this.state.description} onChange={(event) => { this.handleChange(event, 'description') }} />
                 <ul>
                     {renderGenres}
                 </ul>
