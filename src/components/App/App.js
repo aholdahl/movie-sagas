@@ -32,7 +32,7 @@ class App extends Component {
       <MuiThemeProvider theme={theme}>
       <Router>
         <div className="App">
-          <AppBar position="static">
+          <AppBar position="static" className="marquis">
             <h1>Movie Saga Cinema</h1>
           </AppBar>
           <main>

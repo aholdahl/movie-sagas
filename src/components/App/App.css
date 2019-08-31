@@ -3,6 +3,10 @@
   color: white;
 }
 
+.marquis {
+  border: 3px dotted white;
+}
+
 h2 {
   background-color: rgb(206, 170, 62);
   color: rgb(20, 20, 19);
