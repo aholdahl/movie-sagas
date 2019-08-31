@@ -15,8 +15,15 @@ class Home extends Component {
         })
     }
 
+    showDetails = (id)=>{
+        this.props.dispatch({
+            type: 'FETCH_CURRENT',
+            payload: id
+        })
+        this.props.history.push('/details');
+    }
+
     render() {
-        console.log(this.props.movies)
         return (
             <div>
                 <h2>Now Playing</h2>
@@ -31,7 +38,7 @@ class Home extends Component {
                         {this.props.movies.map((film)=>{
                             return (
                                 <tr key={film.id}>
-                                    <td><img src={film.poster}/></td>
+                                    <td><img src={film.poster} alt={film.title} onClick={()=>{this.showDetails(film.id)}}/></td>
                                     <td><h4>{film.title}</h4><p>{film.description}</p></td>
                                 </tr>
                             )

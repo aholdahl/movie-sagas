@@ -9,14 +9,21 @@ import { connect } from 'react-redux';
 class Details extends Component {
     render (){
         return (
-            <h3>Details</h3>
+            <div>
+                <h2>Details</h2>
+                <img src={this.props.currentMovie.poster} alt={this.props.currentMovie.title}/>
+                <h4>{this.props.currentMovie.title}</h4>
+                <p>{this.props.currentMovie.description}</p>
+                <button>Edit</button>
+                <button>Return to Home</button>
+            </div>
         )
     }
 }
 
 const mapStateToProps = (reduxStore) => {
     return {
-        reduxStore
+        currentMovie: reduxStore.currentMovie
     }
 }
 

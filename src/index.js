@@ -20,6 +20,7 @@ import './index.css';
 function* rootSaga() {
     yield takeEvery ('FETCH_MOVIES', fetchMovies);
     yield takeEvery ('FETCH_GENRES', fetchGenres);
+    yield takeEvery ('FETCH_CURRENT', fetchCurrent);
 }
 
 function* fetchMovies(action){
@@ -46,6 +47,18 @@ function* fetchGenres(action) {
     }
 }
 
+function* fetchCurrent(action){
+    try {
+        let response = yield axios.get(`/movies/${action.payload}`)
+        yield put ({
+            type: 'SHOW_DETAILS',
+            payload: response.data[0]
+        })
+    } catch (error){
+        console.log('Could not get current movie:', error);
+    }
+}
+
 // Create sagaMiddleware
 const sagaMiddleware = createSagaMiddleware();
 
@@ -69,11 +82,21 @@ const genres = (state = [], action) => {
     }
 }
 
+const currentMovie = (state = {}, action) =>{
+    switch (action.type){
+        case 'SHOW_DETAILS':
+            return action.payload;
+        default: 
+            return state;
+    }
+}
+
 // Create one store that all components can use
 const storeInstance = createStore(
     combineReducers({
         movies,
         genres,
+        currentMovie,
     }),
     // Add sagaMiddleware to our store
     applyMiddleware(sagaMiddleware, logger),
