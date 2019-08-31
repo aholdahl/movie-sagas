@@ -7,33 +7,34 @@ import Details from '../Details/Details.jsx';
 import Edit from '../Edit/Edit.jsx';
 
 // //import styling libraries
-// import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import 'typeface-roboto';
+import {AppBar} from '@material-ui/core';
 // import './bootstrap.min.css';
 // import swap from 'sweetalert';
-// import 'typeface-roboto';
 import './App.css';
 
-// const theme = createMuiTheme({
-//   palette: {
-//     primary: {
-//       main: '#00695c',
-//     },
-//     secondary: {
-//       main: '#f8bbd0',
-//     }
-//   }
-// })
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#7f0000',
+    },
+    secondary: {
+      main: '#ceaa3e', //rgb(206, 170, 62)
+    }
+  }
+})
 
 class App extends Component {
   // Renders the entire app on the DOM
   render() {
     return (
-      // <MuiThemeProvider theme={theme}>
+      <MuiThemeProvider theme={theme}>
       <Router>
         <div className="App">
-          <header>
+          <AppBar position="static">
             <h1>Movie Saga Cinema</h1>
-          </header>
+          </AppBar>
           <main>
             <Route exact path="/" component={Home} />
             <Route path="/details" component={Details} />
@@ -41,7 +42,7 @@ class App extends Component {
           </main>
         </div>
       </Router>
-      // </MuiThemeProvider >
+      </MuiThemeProvider >
     );
   }
 }

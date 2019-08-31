@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
+import { Button } from '@material-ui/core';
 
 class Details extends Component {
 
@@ -26,14 +27,14 @@ class Details extends Component {
         return (
             <div>
                 <h2>Details</h2>
-                <img src={this.props.currentMovie.poster} alt={this.props.currentMovie.title}/>
-                <h4>{this.props.currentMovie.title}</h4>
-                <p>{this.props.currentMovie.description}</p>
-                <ul>
+                <img src={this.props.currentMovie.poster} alt={this.props.currentMovie.title} className="featuredMovie" />
+                <h4 className="movieDetails">{this.props.currentMovie.title}</h4>
+                <p className="movieDetails">{this.props.currentMovie.description}</p>
+                <Button size="small" variant="contained" color="secondary" className="buttons" onClick={this.handleEdit}>Edit</Button>
+                <Button size="small" variant="contained" color="secondary" className="buttons" onClick={this.returnHome}>Return to Home</Button>
+                <ul className="myGenres">
                     {renderGenres}
                 </ul>
-                <button onClick={this.handleEdit}>Edit</button>
-                <button onClick={this.returnHome}>Return to Home</button>
             </div>
         )
     }

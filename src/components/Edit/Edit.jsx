@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import {Button} from '@material-ui/core';
 
 class Edit extends Component {
     state = {
@@ -70,14 +71,14 @@ class Edit extends Component {
         return (
             <div>
                 <h2>Edit</h2>
-                <img src={this.props.currentMovie.poster} alt={this.props.currentMovie.title} />
-                <input value={this.state.title} onChange={(event) => { this.handleChange(event, 'title') }} />
-                <textarea value={this.state.description} onChange={(event) => { this.handleChange(event, 'description') }} />
-                <ul>
+                <img src={this.props.currentMovie.poster} alt={this.props.currentMovie.title} className="featuredMovie"/>
+                <input className="editFields" value={this.state.title} onChange={(event) => { this.handleChange(event, 'title') }} />
+                <textarea className="editFields" value={this.state.description} onChange={(event) => { this.handleChange(event, 'description') }} />
+                <Button size="small" variant="contained" color="secondary" className="buttons" onClick={this.handleSubmit}>Save Changes</Button>
+                <Button size="small" variant="contained" color="secondary" className="buttons" onClick={this.returnDetails}>Cancel</Button>
+                <ul className="myGenres">
                     {renderGenres}
                 </ul>
-                <button onClick={this.handleSubmit}>Save Changes</button>
-                <button onClick={this.returnDetails}>Cancel</button>
             </div>
         )
     }
