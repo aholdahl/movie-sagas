@@ -1,47 +1,57 @@
-//Input: Movie Title
-//Input: Movie Description
-//Button: Save Changes (updates the applicable movie in the database)
-//Button: Cancel (return to Details)
-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 class Edit extends Component {
     state = {
         title: '',
-        description: ''
+        description: '',
+        // genres: []
     }
 
-    componentDidMount(){
+    //On page load, retrieve the genres from the database and store in the genres reducer (not required for base mode)
+    //store the current details in the local state for editing
+    componentDidMount() {
+        // this.fetchAllGenres();
         this.setState({
             title: this.props.currentMovie.title,
             description: this.props.currentMovie.description,
         })
     }
 
-    handleChange = (event, property)=>{
+    // fetchAllGenres = () => {
+    //     this.props.dispatch({
+    //         type: 'FETCH_ALL_GENRES'
+    //     })
+    // }
+
+    //On change, capture the updated information from the input and save in the local state
+    handleChange = (event, property) => {
         this.setState({
             ...this.state,
             [property]: event.target.value
         })
     }
 
-    handleSubmit = ()=>{
+    //On submit, send updated movie details to the database
+    handleSubmit = () => {
         this.props.dispatch({
-            type: 'CHANGE_CURRENT',
+            type: 'CHANGE_CURRENT_MOVIE',
             payload: {
                 ...this.state,
                 id: this.props.currentMovie.id
             }
         });
+        //Upon successful update of the database, reset the local state to blank
         this.setState({
             title: '',
             description: ''
         })
+        //Navigate back to the Details page
         this.props.history.push('/');
     }
 
-    returnDetails = ()=>{
+    //On click, reset the local state to blank and navigate to the details page
+    returnDetails = () => {
         console.log('in returnDetails');
         this.setState({
             title: '',
@@ -49,15 +59,25 @@ class Edit extends Component {
         })
         this.props.history.push('/details');
     }
-    
+
     render() {
+        //Show all details for selected movie as input fields
+        //Show all genres for selected movie (no editing required for base mode)
+        const renderGenres = this.props.currentGenres.map((genre) => {
+            return (
+                <li>{genre.genre}</li>
+            )
+        })
+
         return (
             <div>
                 <h2>Edit</h2>
                 <img src={this.props.currentMovie.poster} alt={this.props.currentMovie.title} />
-                <input value={ this.state.title } onChange={(event)=>{this.handleChange(event, 'title')}}/>
-                <input value={this.state.description} onChange={(event)=>{this.handleChange(event, 'description')}}/>
-                {/* <p><input type="checkbox" />{this.props.currentMovie.genre}</p> */}
+                <input value={this.state.title} onChange={(event) => { this.handleChange(event, 'title') }} />
+                <input value={this.state.description} onChange={(event) => { this.handleChange(event, 'description') }} />
+                <ul>
+                    {renderGenres}
+                </ul>
                 <button onClick={this.handleSubmit}>Save Changes</button>
                 <button onClick={this.returnDetails}>Cancel</button>
             </div>
@@ -67,7 +87,8 @@ class Edit extends Component {
 
 const mapStateToProps = (reduxStore) => {
     return {
-        currentMovie: reduxStore.currentMovie
+        currentMovie: reduxStore.currentMovie,
+        currentGenres: reduxStore.currentGenres
     }
 }
 

@@ -2,6 +2,7 @@ const express = require('express');
 const pool = require('../modules/pool.js');
 const router = express.Router();
 
+//get all movies from the Movie table and send to the client
 router.get('/', (req, res) => {
     const queryText = `SELECT * FROM "movies" ORDER BY "title" ASC;`
     pool.query(queryText)
@@ -13,8 +14,9 @@ router.get('/', (req, res) => {
         })
 })
 
+//get the current movie from the Movie table and send to the client
 router.get('/:id', (req, res) => {
-    const queryText = `SELECT "movies".id, "movies".title, "movies".poster, "movies".description, "genres"."name" AS "genre" FROM "movies" LEFT JOIN "movies_genres" ON "movies"."id" = "movies_genres"."movies_id" LEFT JOIN "genres" ON "movies_genres"."genres_id" = "genres"."id" WHERE "movies"."id" = $1;`
+    const queryText = `SELECT * FROM "movies" WHERE "id" = $1;`
     pool.query(queryText, [req.params.id])
         .then((result) => {
             res.send(result.rows);
@@ -24,6 +26,7 @@ router.get('/:id', (req, res) => {
         })
 })
 
+//update the current movie in the Movie table and send confirmation to the client
 router.put('/', (req, res)=>{
     let movieToUpdate = req.body;
     const queryText = `UPDATE "movies" SET "title" = $1, "description" = $2 WHERE "id" = $3;`

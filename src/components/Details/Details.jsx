@@ -1,34 +1,27 @@
-//opens a page that shows the details of the movie that was clicked
-//shows all genres attached to that movie
-//Button: Edit (go to Edit)
-//Button: Back to List (return to Home)
-
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 
 class Details extends Component {
 
+    //On click, navigate to the Edit page
     handleEdit = ()=>{
         console.log('in handleEdit');
         this.props.history.push('/edit');
     }
 
+    //On click, navigate to the Home page
     returnHome = ()=>{
         this.props.history.push('/');
     }
 
     render (){
-
-        // let renderGenres = ()=>{if(this.props.currentMovie.genre !== null) {
-        //     // return ( this.props.currentMovie.genre.map((category)=>{
-        //         return (
-        //             <li>{this.props.currentMovie.genre}</li>
-        //             // <li>{category}</li>
-        //         )
-        //     // })
-        //     }
-        // }
-    
+        //Show all details for selected movie
+        //Show all genres for selected movie
+        const renderGenres = this.props.currentGenres.map((genre)=>{
+            return (
+                <li>{genre.genre}</li>
+            )
+        })
 
         return (
             <div>
@@ -36,9 +29,9 @@ class Details extends Component {
                 <img src={this.props.currentMovie.poster} alt={this.props.currentMovie.title}/>
                 <h4>{this.props.currentMovie.title}</h4>
                 <p>{this.props.currentMovie.description}</p>
-                {/* <ul>
+                <ul>
                     {renderGenres}
-                </ul> */}
+                </ul>
                 <button onClick={this.handleEdit}>Edit</button>
                 <button onClick={this.returnHome}>Return to Home</button>
             </div>
@@ -48,7 +41,8 @@ class Details extends Component {
 
 const mapStateToProps = (reduxStore) => {
     return {
-        currentMovie: reduxStore.currentMovie
+        currentMovie: reduxStore.currentMovie,
+        currentGenres: reduxStore.currentGenres
     }
 }
 

@@ -11,24 +11,25 @@ import createSagaMiddleware from 'redux-saga';
 import { takeEvery, put } from 'redux-saga/effects';
 //import child components
 import App from './components/App/App.js';
-
 //import styling libraries
 import './index.css';
 
 
-// Create the rootSaga generator function
+// rootSaga generator function
 function* rootSaga() {
-    yield takeEvery ('FETCH_MOVIES', fetchMovies);
-    yield takeEvery ('FETCH_GENRES', fetchGenres);
-    yield takeEvery ('FETCH_CURRENT', fetchCurrent);
-    yield takeEvery('CHANGE_CURRENT', changeCurrent);
+    yield takeEvery ('FETCH_ALL_MOVIES', fetchAllMovies);
+    // yield takeEvery('FETCH_ALL_GENRES', fetchAllGenres);
+    yield takeEvery ('FETCH_CURRENT_MOVIE', fetchCurrentMovie);
+    yield takeEvery('FETCH_CURRENT_GENRES', fetchCurrentGenres);
+    yield takeEvery('CHANGE_CURRENT_MOVIE', changeCurrentMovie);
 }
 
-function* fetchMovies(action){
+//send GET request to server for the Movies table
+function* fetchAllMovies(action){
     try{
         let response = yield axios.get('/movies')
         yield put ({
-            type: 'SET_MOVIES',
+            type: 'SET_ALL_MOVIES',
             payload: response.data
         })
     } catch (error){
@@ -36,23 +37,25 @@ function* fetchMovies(action){
     }
 }
 
-function* fetchGenres(action) {
-    try {
-        let response = yield axios.get('/genres')
-        yield put({
-            type: 'SET_GENRES',
-            payload: response.data
-        })
-    } catch (error) {
-        console.log('Could not get genres:', error);
-    }
-}
+// //send GET request to server for the Genres table
+// function* fetchAllGenres(action) {
+//     try {
+//         let response = yield axios.get('/genres/')
+//         yield put({
+//             type: 'SET_ALL_GENRES',
+//             payload: response.data
+//         })
+//     } catch (error) {
+//         console.log('Could not get genres:', error);
+//     }
+// }
 
-function* fetchCurrent(action){
+//send GET request to the server for the current movie
+function* fetchCurrentMovie(action){
     try {
-        let response = yield axios.get(`/movies/${action.payload}`)
+        let response = yield axios.get(`/movies/${action.payload}`);
         yield put ({
-            type: 'SHOW_DETAILS',
+            type: 'SET_CURRENT_MOVIE',
             payload: response.data[0]
         })
     } catch (error){
@@ -60,11 +63,26 @@ function* fetchCurrent(action){
     }
 }
 
-function* changeCurrent(action){
+//send GET request to the server for genres of the current movie
+function* fetchCurrentGenres(action) {
+    try {
+        let response = yield axios.get(`/genres/${action.payload}`);
+        yield put({
+            type: 'SET_CURRENT_GENRES',
+            payload: response.data
+        })
+    } catch (error) {
+        console.log('Could not get current genres:', error);
+    }
+}
+
+//send PUT request to the server to update the current movie
+function* changeCurrentMovie(action){
     try {
         yield axios.put(`/movies`, action.payload)
         yield put ({
-            type: 'FETCH_MOVIES',
+            type: 'FETCH_ALL_MOVIES',
+            payload: action.payload
         })
     } catch (error){
         console.log('Could not update current movie:, error');
@@ -77,28 +95,41 @@ const sagaMiddleware = createSagaMiddleware();
 // Used to store movies returned from the server
 const movies = (state = [], action) => {
     switch (action.type) {
-        case 'SET_MOVIES':
+        case 'SET_ALL_MOVIES':
             return action.payload;
         default:
             return state;
     }
 }
 
-// Used to store the movie genres
-const genres = (state = [], action) => {
-    switch (action.type) {
-        case 'SET_GENRES':
-            return action.payload;
-        default:
-            return state;
-    }
-}
+// // Used to store the movie genres
+// const genres = (state = [], action) => {
+//     switch (action.type) {
+//         // case 'SET_GENRES':
+//         //     return action.payload;
+//         case 'SET_ALL_GENRES':
+//             return action.payload;
+//         default:
+//             return state;
+//     }
+// }
 
+// Used to store the current movie details
 const currentMovie = (state = {}, action) =>{
     switch (action.type){
-        case 'SHOW_DETAILS':
+        case 'SET_CURRENT_MOVIE':
             return action.payload;
         default: 
+            return state;
+    }
+}
+
+//Used to store the current movie genres
+const currentGenres = (state = [], action) => {
+    switch (action.type) {
+        case 'SET_CURRENT_GENRES':
+            return action.payload;
+        default:
             return state;
     }
 }
@@ -107,8 +138,9 @@ const currentMovie = (state = {}, action) =>{
 const storeInstance = createStore(
     combineReducers({
         movies,
-        genres,
+        // genres,
         currentMovie,
+        currentGenres,
     }),
     // Add sagaMiddleware to our store
     applyMiddleware(sagaMiddleware, logger),

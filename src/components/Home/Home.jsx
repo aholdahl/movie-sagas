@@ -1,29 +1,36 @@
-//renders the movie list as a table
-//ONCLICK: when movie poster is clicked, go to Details
-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 class Home extends Component {
+
+    //On page load, retrieve the movie details from the database and store in the movies reducer
     componentDidMount (){
-        this.fetchMovies()
+        this.fetchAllMovies();
     }
 
-    fetchMovies = ()=>{
+    fetchAllMovies = ()=>{
         this.props.dispatch({
-            type: 'FETCH_MOVIES'
+            type: 'FETCH_ALL_MOVIES'
         })
     }
 
+    //On click, retrieve the details of the clicked movie and store in the currentMovie reducer
     showDetails = (id)=>{
         this.props.dispatch({
-            type: 'FETCH_CURRENT',
+            type: 'FETCH_CURRENT_MOVIE',
             payload: id
         })
+    //Also retrieve the genres of the clicked movie and store in the currentGenres reducer
+        this.props.dispatch({
+            type: 'FETCH_CURRENT_GENRES',
+            payload: id
+        })
+    //open Details page
         this.props.history.push('/details');
     }
 
     render() {
+        //Show all details for all movies
         return (
             <div>
                 <h2>Now Playing</h2>
