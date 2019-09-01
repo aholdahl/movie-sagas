@@ -1,23 +1,23 @@
 # Getting Started
 
-Fork and clone the repository
-npm install
-Create a database "saga_movies_weekend"
-Create tables "movies", "genres", and "movies_genres" using the queries provided in database.sql
-    Sample data has also been provided
+- Fork and clone the repository
+- npm install
+- Create a database "saga_movies_weekend"
+- Create tables "movies", "genres", and "movies_genres" using the queries provided in database.sql
+    - Sample data has also been provided
 
 
 # Using the App
-npm run server
-npm run client
-The app will load on the Home screen `('/')`, which will display all movies in the database.
-Click on a movie poster to open the Details page.
-On the Details page, the categories, if any, will also be displayed.
-Click Edit to update the title or description.
-On the Edit page, the title and description will now be in an editable field.
-Once all desired changes have been made, click Save Changes to send the updated information to the database.
-    Save Changes and Cancel will both navigate back to the Details page.
-From the Details page, the user can also return to the Home page if desired.
+- npm run server
+- npm run client
+- The app will load on the Home screen `('/')`, which will display all movies in the database.
+- Click on a movie poster to open the Details page.
+- On the Details page, the categories, if any, will also be displayed.
+- Click Edit to update the title or description.
+- On the Edit page, the title and description will now be in an editable field.
+- Once all desired changes have been made, click Save Changes to send the updated information to the database.
+    - Save Changes and Cancel will both navigate back to the Details page.
+- From the Details page, the user can also return to the Home page if desired.
 
 
 ## Video Wireframe

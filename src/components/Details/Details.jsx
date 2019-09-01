@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { Button } from '@material-ui/core';
+import { Button, Grid, Paper } from '@material-ui/core';
 
 class Details extends Component {
 
